@@ -7,3 +7,5 @@
 ### _Hello!_
 
 > My name is Nick. I'm a second year MPH Biostatistics student at the Columbia  University Mailman School of Public Health. 
+
+[Check out my other website](https://www.nicholastwilliams.com)
