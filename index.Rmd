@@ -1,7 +1,9 @@
 ---
-title: "Nick Williams"
 ---
 
-### I have a webpage!
+\br
+\br
 
-And I can put all kinds of stuff on it!
+### _Hello!_
+
+> My name is Nick. I'm a second year MPH Biostatistics student at the Columbia  University Mailman School of Public Health. 
