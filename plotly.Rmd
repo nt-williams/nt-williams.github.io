@@ -5,7 +5,7 @@ output:
     orientation: columns
     vertical_layout: fill
     navbar: 
-      - { title: "Home", href: index.html, align: left }
+      - { title: "Home", href: 'https://nt-williams.github.io/', align: left }
 ---
 
 ```{r setup, include=FALSE}
