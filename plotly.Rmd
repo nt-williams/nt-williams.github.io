@@ -44,26 +44,7 @@ insta_data$order_dow <- fct_relevel(insta_data$order_dow,
 Column {data-width=500}
 -----------------------------------------------------------------------
 
-### Chart A
-
-```{r dpi = 300}
-density_ggplotly <- insta_data %>%
-  mutate(order_dow = as.factor(order_dow)) %>%
-  ggplot(aes(x = order_hour_of_day, fill = order_dow)) +
-  geom_density(alpha = 0.2) +
-  theme_bw() +
-  labs(x = "Order hour of the day (24hr)", 
-       y = "Denstiy") + 
-  viridis::scale_fill_viridis(discrete = TRUE) + 
-  guides(fill = guide_legend(title = "Day"))
-
-ggplotly(density_ggplotly)
-```
-
-Column {data-width=500}
------------------------------------------------------------------------
-
-### Chart B
+### Number of orders per department
 
 ```{r dpi = 300}
 x_lab <- list(
@@ -80,14 +61,41 @@ insta_data %>%
   mutate(department = as.factor(department), 
         department = fct_reorder(department, numb_orders)) %>% 
   plot_ly(x = ~department, y = ~numb_orders, color = ~department, type = "bar") %>% 
-  layout(title = "Number of orders per department", 
-         xaxis = x_lab, 
+  layout(xaxis = x_lab, 
          yaxis = y_lab)
 ```
 
-### Chart C
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Distribution of time at which orders are placed
+
+```{r dpi = 300}
+density_ggplotly <- insta_data %>%
+  ggplot(aes(x = order_hour_of_day, fill = order_dow)) +
+  geom_density(alpha = 0.2) +
+  theme_bw() +
+  labs(x = "Order hour of the day (24hr)", 
+       y = "Denstiy") + 
+  viridis::scale_fill_viridis(discrete = TRUE) + 
+  guides(fill = guide_legend(title = "Day"))
+
+ggplotly(density_ggplotly)
+```
+
+### Boxplots of time of order stratified by department
 
 ```{r}
+box_ggplotly <- insta_data %>%  
+  ggplot(aes(x = department, y = order_hour_of_day, fill = department)) + 
+  geom_boxplot() + 
+  coord_flip() +
+  theme_bw() + 
+  viridis::scale_fill_viridis(discrete = TRUE) + 
+  labs(y = "Order hour of the day (24hr)",
+       x = "Department") + 
+  theme(legend.position = "none") 
 
+ggplotly(box_ggplotly)
 ```
 
