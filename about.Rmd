@@ -5,9 +5,9 @@ output:
     toc_float: true
 ---
 
-\br
-\br
-\br
+\br  
+\br  
+\br  
 
 ## Academic History
 

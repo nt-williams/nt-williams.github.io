@@ -8,24 +8,60 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(ggridges)
 ```
 
-Column {data-width=650}
+```{r}
+insta_data <- p8105.datasets::instacart %>% 
+  sample_n(5000) %>% 
+  janitor::clean_names() %>% 
+  mutate(order_id = as.factor(order_id))
+```
+
+Column {data-width=500}
 -----------------------------------------------------------------------
 
 ### Chart A
 
-```{r}
+```{r dpi = 300}
+density_ggplotly <- insta_data %>%
+  mutate(order_dow = as.factor(order_dow)) %>%
+  ggplot(aes(x = order_hour_of_day, fill = order_dow)) +
+  geom_density(alpha = 0.2) +
+  theme_bw() +
+  labs(x = "Order hour of the day (24hr)", 
+       y = "Denstiy") + 
+  viridis::scale_fill_viridis(discrete = TRUE) + 
+  guides(fill = guide_legend(title = "Day"))
 
+ggplotly(density_ggplotly)
 ```
 
-Column {data-width=350}
+Column {data-width=500}
 -----------------------------------------------------------------------
 
 ### Chart B
 
-```{r}
+```{r dpi = 300}
+x_lab <- list(
+  title = "Department"
+  )
 
+y_lab <- list(
+  title = "Number of Orders"
+  )
+
+insta_data %>% 
+  group_by(department) %>% 
+  summarize(numb_orders = n()) %>% 
+  mutate(department = as.factor(department), 
+        department = fct_reorder(department, numb_orders)) %>% 
+  plot_ly(x = ~department, y = ~numb_orders, color = ~department, type = "bar") %>% 
+  layout(title = "Number of orders per department", 
+         xaxis = x_lab, 
+         yaxis = y_lab)
 ```
 
 ### Chart C
