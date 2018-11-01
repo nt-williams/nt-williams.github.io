@@ -4,6 +4,8 @@ output:
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
+    navbar: 
+      - { title: "Home", href: "https://nt-williams.github.io/", align: left }
 ---
 
 ```{r setup, include=FALSE}
