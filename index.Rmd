@@ -1,10 +1,18 @@
 ---
 ---
 
-\br
-\br
+<style type="text/css">
+
+body {
+   font-size: 18px;
+}
+
+</style>
+
+<br>
+<br>
 
 # _Hello!_
 
-> My name is Nick. I'm a second year MPH Biostatistics student at the Columbia  University Mailman School of Public Health. Feel free to have a look around. 
+My name is Nick. I'm a second year MPH Biostatistics student at the Columbia  University Mailman School of Public Health. Feel free to have a look around. Outside of school, I give my time to snowboarding, mountain biking, climbing, video games, and dogs. 
 

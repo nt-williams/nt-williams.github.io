@@ -14,13 +14,15 @@ library(tidyverse)
 library(plotly)
 ```
 
-```{r}
+```{r data import and cleaning}
+# importing and cleaning a sample of size 5000 from the insta-cart dataset
 insta_data <- p8105.datasets::instacart %>% 
   sample_n(5000) %>% 
   janitor::clean_names() %>% 
   mutate(order_id = as.factor(order_id), 
          order_dow = order_dow + 1)
 
+# changing up the factoring of order day for plotting
 days <- c("Sunday",
           "Monday",
           "Tuesday",
@@ -46,7 +48,8 @@ Column {data-width=500}
 
 ### Number of orders per department
 
-```{r dpi = 300}
+```{r barchart, dpi = 300}
+# for plotly you have to create lists for the axis labels... dumb
 x_lab <- list(
   title = "Department"
   )
@@ -55,6 +58,7 @@ y_lab <- list(
   title = "Number of Orders"
   )
 
+# bar chart of number of orders per department
 insta_data %>% 
   group_by(department) %>% 
   summarize(numb_orders = n()) %>% 
@@ -70,7 +74,8 @@ Column {data-width=500}
 
 ### Distribution of time at which orders are placed
 
-```{r dpi = 300}
+```{r density plot, dpi = 300}
+# density plot of order time stratified by order day
 density_ggplotly <- insta_data %>%
   ggplot(aes(x = order_hour_of_day, fill = order_dow)) +
   geom_density(alpha = 0.2) +
@@ -85,7 +90,8 @@ ggplotly(density_ggplotly)
 
 ### Boxplots of time of order stratified by department
 
-```{r}
+```{r boxplot, dpi = 300}
+# boxplots of order time stratified by the product department
 box_ggplotly <- insta_data %>%  
   ggplot(aes(x = department, y = order_hour_of_day, fill = department)) + 
   geom_boxplot() + 
