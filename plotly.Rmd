@@ -18,7 +18,27 @@ library(plotly)
 insta_data <- p8105.datasets::instacart %>% 
   sample_n(5000) %>% 
   janitor::clean_names() %>% 
-  mutate(order_id = as.factor(order_id))
+  mutate(order_id = as.factor(order_id), 
+         order_dow = order_dow + 1)
+
+days <- c("Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday")
+
+insta_data$order_dow <- days[insta_data$order_dow]
+
+insta_data$order_dow <- fct_relevel(insta_data$order_dow,
+                                    "Sunday",
+                                    "Monday",
+                                    "Tuesday",
+                                    "Wednesday",
+                                    "Thursday",
+                                    "Friday",
+                                    "Saturday")
 ```
 
 Column {data-width=500}
