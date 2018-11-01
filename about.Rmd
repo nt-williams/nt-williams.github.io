@@ -8,14 +8,13 @@ output:
 <style type="text/css">
 
 body {
-   font-size: 18px;
+   font-size: 15px;
 }
 
 </style>
 
-\br  
-\br  
-\br  
+<br>
+<br>
 
 ## Academic History
 
@@ -23,7 +22,7 @@ I received by undergraduate degree in psychology from the University of Colorado
 
 During August of 2017, I moved from Boulder to New York City to start an MPH in biostatistics at Columbia University. Since arriving at Columbia, I have worked on research projects analyzing trends of marijuana use and the effects of medical marijuana and recreational marijuana policy on substance abuse. I'm also a teaching assistant for an introductory biostatistics and epidemiology course where I lead a weekly lab section of 25 first year MPH students. 
 
-### Relevant coursework: 
+### Relevant coursework 
 
 • Probability Theory – Fall 2018  
 • Data Science I – Fall 2018  
@@ -43,4 +42,30 @@ During August of 2017, I moved from Boulder to New York City to start an MPH in 
 • Calculus & Analytic Geometry II – Spring 2014  
 • Calculus & Analytic Geometry I – Fall 2014  
 
-## Work History
+## Professional Experience
+
+*Columbia University Mailman School of Public Health, New York, NY	2018  
+Biostatistics Intern, Advisor: Christine Mauro, PhD*
+
+- Difference-in-difference analysis comparing tobacco use, cigarette use, and alcohol use among differing age groups before and after states pass recreational marijuana laws  
+
+    - Analyses conducted in R by creating a shiny application which can be viewed/used at:                                          https://nicholaswilliams.shinyapps.io/mj_app_version2/  
+    - Code is available on GitHub  
+    
+- Conducted analysis of the effect of medical marijuana law restrictiveness on prevalence change in past month use of           marijuana, past year use of marijuana, and first use of marijuana comparing after to before states passed medical marijuana   laws  
+
+    - Analyses conducted in SAS using linear mixed-effects models  
+    -	Code is available on GitHub  
+    
+- Analysis of CDC Multiple Cause of Death files to estimate corrected mortality rates and counts of death due to opioid         overdose  
+
+    -	Analyses conducted in SAS and R using probit/logistic regression, SVM, and various other statistical/machine learning         methods  
+    -	Code is available on GitHub
+
+
+
+
+
+
+
+
