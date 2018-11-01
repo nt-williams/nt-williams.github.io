@@ -90,7 +90,7 @@ ggplotly(density_ggplotly)
 
 ### Boxplots of time of order stratified by department
 
-```{r boxplot, dpi = 300}
+```{r boxplot, dpi = 300, fig.asp = "70%"}
 # boxplots of order time stratified by the product department
 box_ggplotly <- insta_data %>%  
   ggplot(aes(x = department, y = order_hour_of_day, fill = department)) + 
