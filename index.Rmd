@@ -16,10 +16,11 @@ body {
 
 Mapping mass shootings in the United States
 
-```{r message = FALSE, results = 'hide', out.width = "90%", fig.align = "center", dpi = 300}
+```{r message = FALSE, echo = FALSE, results = 'hide', out.width = "90%", fig.align = "center", dpi = 300}
 library(tidyverse)
 library(viridis)
 library(magick)
+library(wesanderson)
 
 # pulling and manipulating mass shooting data
 
@@ -58,10 +59,12 @@ mass_counts_location <- left_join(states, mass_counts, by = "state") %>%
 mass_vic_location <- left_join(states, mass_victims, by = "state") %>% 
   mutate(total_vic = ifelse(is.na(total_vic), 0, total_vic))
 
+pal <- wes_palette("Zissou1", type = "continuous")
+
 tiff("test.tiff", units = "in", width = 9, height = 7, res = 500)
   mass_vic_location %>% 
   ggplot() + 
-  geom_polygon(aes(x = long, y = lat, fill = total_vic, group = group), color = NA, alpha = 0.9) + 
+  geom_polygon(aes(x = long, y = lat, fill = total_vic, group = group), color = NA, alpha = 0.8) + 
   labs(title = "Number of victims due to mass shootings in the 48 continguous states, 1966 - 2016", 
        caption = "Data source: Stanford Mass Shootings in America, courtesy of the Stanford Geospatial Center and Stanford Libraries") +
   scale_fill_viridis(name = "Number of victims", 
@@ -71,7 +74,7 @@ tiff("test.tiff", units = "in", width = 9, height = 7, res = 500)
                                             ticks = FALSE)) +
   theme_void() + 
   coord_map() + 
-  theme(plot.background = element_rect(fill = "#f5f5f2", color = NA), 
+  theme(plot.background = element_rect(fill = "#F0F0F0", color = NA), 
         legend.position = c(0.15, 0.09), 
         legend.direction = "horizontal", 
         plot.caption = element_text(size = 7, color = "#4e4d47",
