@@ -12,4 +12,4 @@ navbar:
       href: http://github.com/nt-williams/
 output:
   html_document:
-    theme: flatly
+    theme: sandstone
