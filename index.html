@@ -179,15 +179,12 @@ $(document).ready(function () {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">Home</a>
+      <a class="navbar-brand" href="index.html">Portfolio</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="about.html">Experience</a>
-</li>
-<li>
-  <a href="plotly.html">Plotly</a>
+  <a href="https://nicholastwilliams.com">Home</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -223,11 +220,75 @@ body {
 }
 
 </style>
-<p><br> <br></p>
-<div id="hello" class="section level1">
-<h1><em>Hello!</em></h1>
-<p>My name is Nick. I’m a second year MPH Biostatistics student at the Columbia University Mailman School of Public Health. Feel free to have a look around. Outside of school, I give my time to snowboarding, mountain biking, climbing, video games, and dogs.</p>
-<p>If you need to contact me, click on the envelope in the right hand corner!</p>
+<p><br></p>
+<div id="visualization" class="section level3">
+<h3>Visualization</h3>
+<p>Mapping mass shootings in the United States</p>
+<pre class="r"><code>library(tidyverse)
+library(viridis)
+library(magick)
+
+# pulling and manipulating mass shooting data
+
+mass_shooting &lt;- 
+  read_csv(&quot;https://raw.githubusercontent.com/StanfordGeospatialCenter/MSA/master/Data/Stanford_MSA_Database.csv&quot;) %&gt;% 
+  mutate(count = 1) %&gt;% 
+  rename(year = Date, 
+         city = City, 
+         state = State, 
+         num_fatal = &quot;Total Number of Fatalities&quot;, 
+         num_victim = &quot;Total Number of Victims&quot;) %&gt;% 
+  select(year, city, state, count, num_fatal, num_victim) %&gt;% 
+  mutate(year = str_pad(year, width = 10, side = &quot;left&quot;, &quot;0&quot;), 
+         year = substring(year , 7, 10), 
+         year = as_factor(year), 
+         state = str_to_lower(state))
+
+# getting US geo data
+
+states &lt;- map_data(&quot;state&quot;) %&gt;% 
+  rename(state = region)
+
+# joing US and shooting data
+
+mass_counts &lt;- mass_shooting %&gt;% 
+  group_by(state) %&gt;% 
+  summarise(n = n())
+
+mass_victims &lt;- mass_shooting %&gt;% 
+  group_by(state) %&gt;% 
+  summarize(total_vic = sum(num_victim))
+
+mass_counts_location &lt;- left_join(states, mass_counts, by = &quot;state&quot;) %&gt;% 
+  mutate(n = ifelse(is.na(n), 0, n))
+
+mass_vic_location &lt;- left_join(states, mass_victims, by = &quot;state&quot;) %&gt;% 
+  mutate(total_vic = ifelse(is.na(total_vic), 0, total_vic))
+
+tiff(&quot;test.tiff&quot;, units = &quot;in&quot;, width = 9, height = 7, res = 500)
+  mass_vic_location %&gt;% 
+  ggplot() + 
+  geom_polygon(aes(x = long, y = lat, fill = total_vic, group = group), color = NA, alpha = 0.9) + 
+  labs(title = &quot;Number of victims due to mass shootings in the 48 continguous states, 1966 - 2016&quot;, 
+       caption = &quot;Data source: Stanford Mass Shootings in America, courtesy of the Stanford Geospatial Center and Stanford Libraries&quot;) +
+  scale_fill_viridis(name = &quot;Number of victims&quot;, 
+                     guide = guide_colorbar(barheight = unit(2, units = &quot;mm&quot;),
+                                            barwidth = unit(40, units = &quot;mm&quot;),
+                                            title.position = &#39;top&#39;, nrow = 1, 
+                                            ticks = FALSE)) +
+  theme_void() + 
+  coord_map() + 
+  theme(plot.background = element_rect(fill = &quot;#f5f5f2&quot;, color = NA), 
+        legend.position = c(0.15, 0.09), 
+        legend.direction = &quot;horizontal&quot;, 
+        plot.caption = element_text(size = 7, color = &quot;#4e4d47&quot;,
+                                    margin = margin(b = 0.3, unit = &quot;cm&quot;), hjust = 0.98), 
+        legend.title = element_text(size = 8, color = &quot;#4e4d47&quot;),
+        legend.text = element_text(size = 7, color = &quot;#4e4d47&quot;),
+        plot.title = element_text(size = 10, hjust = .1, color = &quot;#4e4d47&quot;, 
+                                  margin = margin(b = -0.1, t = 0.4, l = 2, unit = &quot;cm&quot;)))
+dev.off()</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="2250" style="display: block; margin: auto;" /></p>
 </div>
 
 

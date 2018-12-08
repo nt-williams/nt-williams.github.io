@@ -13,4 +13,4 @@ RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
 BuildType: Website
-WebsitePath: ~/fall_2018/data_science/homework/homework_4/nt-williams.github.io
+WebsitePath: ~/website/nt-williams.github.io

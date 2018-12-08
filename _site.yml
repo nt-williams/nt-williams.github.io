@@ -1,12 +1,10 @@
 name: "Yay internet!"
 output_dir: "."
 navbar:
-  title: "Home"
+  title: "Portfolio"
   left:
-    - text: Experience
-      href: about.html
-    - text: Plotly
-      href: plotly.html
+    - text: Home
+      href: https://nicholastwilliams.com
   right:
     - icon: fa-envelope fa-lg
       href: mailto:<ntwilliams.personal.com>
