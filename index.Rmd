@@ -14,80 +14,77 @@ body {
 
 ### Visualization
 
-Mapping mass shootings in the United States
+Mapping mass shootings in the United States. Code is available [here](https://github.com/nt-williams/mass_shootings)
 
 ```{r message = FALSE, echo = FALSE, results = 'hide', out.width = "90%", fig.align = "center", dpi = 300}
-library(tidyverse)
-library(viridis)
 library(magick)
-library(wesanderson)
 
 # pulling and manipulating mass shooting data
 
-mass_shooting <- 
-  read_csv("https://raw.githubusercontent.com/StanfordGeospatialCenter/MSA/master/Data/Stanford_MSA_Database.csv") %>% 
-  mutate(count = 1) %>% 
-  rename(year = Date, 
-         city = City, 
-         state = State, 
-         num_fatal = "Total Number of Fatalities", 
-         num_victim = "Total Number of Victims") %>% 
-  select(year, city, state, count, num_fatal, num_victim) %>% 
-  mutate(year = str_pad(year, width = 10, side = "left", "0"), 
-         year = substring(year , 7, 10), 
-         year = as_factor(year), 
-         state = str_to_lower(state))
-
-# getting US geo data
-
-states <- map_data("state") %>% 
-  rename(state = region)
-
-# joing US and shooting data
-
-mass_counts <- mass_shooting %>% 
-  group_by(state) %>% 
-  summarise(n = n())
-
-mass_victims <- mass_shooting %>% 
-  group_by(state) %>% 
-  summarize(total_vic = sum(num_victim))
-
-mass_counts_location <- left_join(states, mass_counts, by = "state") %>% 
-  mutate(n = ifelse(is.na(n), 0, n))
-
-mass_vic_location <- left_join(states, mass_victims, by = "state") %>% 
-  mutate(total_vic = ifelse(is.na(total_vic), 0, total_vic))
-
-pal <- wes_palette("Zissou1", type = "continuous")
-
-tiff("test.tiff", units = "in", width = 9, height = 7, res = 500)
-  mass_vic_location %>% 
-  ggplot() + 
-  geom_polygon(aes(x = long, y = lat, fill = total_vic, group = group), color = NA, alpha = 0.8) + 
-  labs(title = "Number of victims due to mass shootings in the 48 continguous states, 1966 - 2016", 
-       caption = "Data source: Stanford Mass Shootings in America, courtesy of the Stanford Geospatial Center and Stanford Libraries") +
-  scale_fill_viridis(name = "Number of victims", 
-                     guide = guide_colorbar(barheight = unit(2, units = "mm"),
-                                            barwidth = unit(40, units = "mm"),
-                                            title.position = 'top', nrow = 1, 
-                                            ticks = FALSE)) +
-  theme_void() + 
-  coord_map() + 
-  theme(plot.background = element_rect(fill = "#F0F0F0", color = NA), 
-        legend.position = c(0.15, 0.09), 
-        legend.direction = "horizontal", 
-        plot.caption = element_text(size = 7, color = "#4e4d47",
-                                    margin = margin(b = 0.3, unit = "cm"), hjust = 0.98), 
-        legend.title = element_text(size = 8, color = "#4e4d47"),
-        legend.text = element_text(size = 7, color = "#4e4d47"),
-        plot.title = element_text(size = 10, hjust = .1, color = "#4e4d47", 
-                                  margin = margin(b = -0.1, t = 0.4, l = 2, unit = "cm")))
-dev.off()
+# mass_shooting <- 
+#   read_csv("https://raw.githubusercontent.com/StanfordGeospatialCenter/MSA/master/Data/Stanford_MSA_Database.csv") %>% 
+#   mutate(count = 1) %>% 
+#   rename(year = Date, 
+#          city = City, 
+#          state = State, 
+#          num_fatal = "Total Number of Fatalities", 
+#          num_victim = "Total Number of Victims") %>% 
+#   select(year, city, state, count, num_fatal, num_victim) %>% 
+#   mutate(year = str_pad(year, width = 10, side = "left", "0"), 
+#          year = substring(year , 7, 10), 
+#          year = as_factor(year), 
+#          state = str_to_lower(state))
+# 
+# # getting US geo data
+# 
+# states <- map_data("state") %>% 
+#   rename(state = region)
+# 
+# # joing US and shooting data
+# 
+# mass_counts <- mass_shooting %>% 
+#   group_by(state) %>% 
+#   summarise(n = n())
+# 
+# mass_victims <- mass_shooting %>% 
+#   group_by(state) %>% 
+#   summarize(total_vic = sum(num_victim))
+# 
+# mass_counts_location <- left_join(states, mass_counts, by = "state") %>% 
+#   mutate(n = ifelse(is.na(n), 0, n))
+# 
+# mass_vic_location <- left_join(states, mass_victims, by = "state") %>% 
+#   mutate(total_vic = ifelse(is.na(total_vic), 0, total_vic))
+# 
+# pal <- wes_palette("Zissou1", type = "continuous")
+# 
+# tiff("test.tiff", units = "in", width = 9, height = 7, res = 500)
+#   mass_vic_location %>% 
+#   ggplot() + 
+#   geom_polygon(aes(x = long, y = lat, fill = total_vic, group = group), color = NA, alpha = 0.8) + 
+#   labs(title = "Number of victims due to mass shootings in the 48 continguous states, 1966 - 2016", 
+#        caption = "Data source: Stanford Mass Shootings in America, courtesy of the Stanford Geospatial Center and Stanford Libraries") +
+#   scale_fill_viridis(name = "Number of victims", 
+#                      guide = guide_colorbar(barheight = unit(2, units = "mm"),
+#                                             barwidth = unit(40, units = "mm"),
+#                                             title.position = 'top', nrow = 1, 
+#                                             ticks = FALSE)) +
+#   theme_void() + 
+#   coord_map() + 
+#   theme(plot.background = element_rect(fill = "#F0F0F0", color = NA), 
+#         legend.position = c(0.15, 0.09), 
+#         legend.direction = "horizontal", 
+#         plot.caption = element_text(size = 7, color = "#4e4d47",
+#                                     margin = margin(b = 0.3, unit = "cm"), hjust = 0.98), 
+#         legend.title = element_text(size = 8, color = "#4e4d47"),
+#         legend.text = element_text(size = 7, color = "#4e4d47"),
+#         plot.title = element_text(size = 10, hjust = .1, color = "#4e4d47", 
+#                                   margin = margin(b = -0.1, t = 0.4, l = 2, unit = "cm")))
+# dev.off()
 ```
 
-```{r fig.align = "center", echo = FALSE}
-image_read("test.tiff")
+```{r fig.align = "center", echo = FALSE, out.width = "85%", dpi = 300}
+image_read("C:/Users/niwi8/OneDrive/Documents/free_lance/mass_shootings/shooting.gif")
 ```
 
 
