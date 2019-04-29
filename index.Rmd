@@ -14,7 +14,7 @@ body {
 
 ### Visualization
 
-Mapping mass shootings in the United States. Code is available [here](https://github.com/nt-williams/mass_shootings).
+Mapping mass shootings in the United States. Code is available [here](https://github.com/nt-williams/mass_shootings). 
 
 ___
 

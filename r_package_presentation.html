@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Nick Williams" />
+
+
+<title>Making an R package: Getting started and lessons learned</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Portfolio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="https://nicholastwilliams.com">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Presentations
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="r_package_presentation.html">Making an R Package</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="mailto:&lt;ntwilliams.personal.com&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://github.com/nt-williams/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Making an R package: Getting started and lessons learned</h1>
+<h4 class="author">Nick Williams</h4>
+
+</div>
+
+
+<div id="a-little-background" class="section level2">
+<h2>A little background</h2>
+<p>An introductory slide deck can be found <a href="https://speakerdeck.com/ntwilliams/making-an-r-package">here</a>.</p>
+</div>
+<div id="creating-the-initial-package" class="section level2">
+<h2>Creating the initial package</h2>
+<p>To get setup, we can first check to see if the <code>devtools</code>, <code>usethis</code>, and <code>glue</code> packages are installed and if not install them.</p>
+<pre class="r"><code>pkg &lt;- c(&quot;devtools&quot;, &quot;usethis&quot;, &quot;glue&quot;, &quot;testthat&quot;, &quot;roxygen2&quot;)
+
+lapply(pkg, require, character.only = TRUE)</code></pre>
+<p><em>devtools</em> is your biggest friend when making a package, it is full of helper functions that speed up the development process. Once we have <em>devtools</em> loaded, we can use it to create the skeleton of the package. But first, you need to decide the most important aspect of your package, its name.</p>
+<p>In this case, we will name our package <em>foopkg</em>. To create the package we call <code>create_packages()</code> and specify where to create the project for the package on the computer.</p>
+<pre class="r"><code>create_package(&quot;~/Documents/foopkg&quot;)</code></pre>
+<p>I’m creating a project in the “Documents” folder on my computer. If you want to save the package in a different folder just modify the filepath. You should get an output similar to this and a new R project should open up in a new window. In the new project, attach <em>devtools</em> (<code>library(devtools)</code>).</p>
+<pre class="r"><code>✔ Creating &#39;C:/Users/niwi8/Documents/foopkg/&#39;
+✔ Setting active project to &#39;C:/Users/niwi8/Documents/foopkg&#39;
+✔ Creating &#39;R/&#39;
+✔ Writing &#39;DESCRIPTION&#39;
+Package: foopkg
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R (parsed):
+    * First Last &lt;first.last@example.com&gt; [aut, cre] (&lt;https://orcid.org/YOUR-ORCID-ID&gt;)
+Description: What the package does (one paragraph).
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+✔ Writing &#39;NAMESPACE&#39;
+✔ Writing &#39;foopkg.Rproj&#39;
+✔ Adding &#39;.Rproj.user&#39; to &#39;.gitignore&#39;
+✔ Adding &#39;^foopkg\\.Rproj$&#39;, &#39;^\\.Rproj\\.user$&#39; to &#39;.Rbuildignore&#39;
+✔ Opening &#39;C:/Users/niwi8/Documents/foopkg/&#39; in new RStudio session
+✔ Setting active project to &#39;&lt;no active project&gt;&#39;</code></pre>
+<p>If you use version control, now would also be a good time to create a git repository for your new package (I’m not going to here, but you should really do this if working on a real package). <em>devtools</em> is nice and has a function to do just this.</p>
+<pre class="r"><code>use_git()</code></pre>
+<p>Before we go any further, we should also add a license. Making an R package is a lot of work and it is important to take ownership of what you create. An MIT License is the best way to go if you want other people to be able to use your package and its code with the only restriction that any further distribution of the package also includes the license.</p>
+<pre class="r"><code>use_mit_license(&quot;Your name here&quot;)</code></pre>
+<p>Two new files should be added to your package folder. If you open the .md file you should see a license identical to this one but with your name instead.</p>
+<pre><code># MIT License
+
+Copyright (c) 2019 Nick Williams
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</code></pre>
+</div>
+<div id="adding-functions" class="section level2">
+<h2>Adding functions</h2>
+<p>Making a package requires you to have functions within the package to actually use. We won’t go over writing functions here, but there are plenty of resources online if you need help.</p>
+<p>The code for package functions should be stored in the R folder of the project directory. It is good practice to save the file name as the name of the function itself. Once again, <em>devtools</em> has a helper function for this.</p>
+<pre class="r"><code>use_r(&quot;fooadd&quot;)</code></pre>
+<pre class="r"><code>● Modify &#39;R/fooadd.R&#39;</code></pre>
+<p><code>use_r()</code> will create a .R file in R/. In this case, the file will be called “fooadd.R” which we will populate with the defining code of the function(s).</p>
+<pre class="r"><code>fooadd &lt;- function(...) {
+  x &lt;- sum(...)
+
+  out &lt;- list(vals = unlist(list(...)), sum = x)
+  class(out) &lt;- &quot;fadd&quot;
+  out
+}
+
+print.fadd &lt;- function(x, ...) {
+
+  base &lt;- glue::glue(&#39;{x$vals[1]} +&#39;)
+  y &lt;- x$vals[2L:length(x$vals)]
+
+  for (i in 1L:length(y)) {
+    if (i &lt; length(y)) {
+      base &lt;- glue::glue(&#39;{base} {y[i]} +&#39;)
+    } else if (i == length(y)) {
+      base &lt;- glue::glue(&#39;{base} {y[i]}&#39;)
+    }
+  }
+  cat(glue::glue(&#39;{base} = {x$sum}&#39;))
+}</code></pre>
+<p><code>fooadd</code> is a simple function that takes any number of integers as its arguments and returns their sum. However, instead of returning standard R console output, we are are going to utilize the S3 object-oriented program mechanic in R to output some nicer looking output. To do this, we write a function called <code>print.fadd</code> which takes as its input the list created when calling <code>fooadd</code> and then combines those list elements using <code>glue</code>. Now, whenever printing the results of <code>fooadd</code>, the function <code>print</code> searches through its defined methods and recognizes how to print an object of class “fadd”.</p>
+<p>This might seem unnecessary, but it’s important to remember that you should be writing functions that are going to be distributed and used in ways you may not expect. Beyond returning a more user friendly output, creating an S3 method for the generic <code>print</code> function allows users to save the results of <code>fooadd</code> as an object which can be further manipulated.</p>
+<div id="experimentation" class="section level3">
+<h3>Experimentation</h3>
+<p>Of course you are going to want to test your function as you go to make sure it’s working the way you expect it to work. Instead of adding the function to your global environment as you might do in a normal R script you should call <code>load_all()</code>.</p>
+<pre class="r"><code>load_all()</code></pre>
+<pre class="r"><code>Loading foopkg</code></pre>
+<p>If we call this for <em>foopkg</em> we can now experiment with <code>fooadd</code> in a robust way.</p>
+<pre class="r"><code>fooadd(1, 2, 3)
+## 1 + 2 + 3 = 6
+
+fooadd(1, 45, 6)
+## 1 + 45 + 6 = 52</code></pre>
+<p>It looks like our functions are working!</p>
+</div>
+</div>
+<div id="documentation" class="section level2">
+<h2>Documentation</h2>
+<p>If you’re creating functions that are not intended for distribution, you could call the job complete. Publishable packages, however, are distributed with documentation that helps users figure out how to utilize the functions. Good documentation is a cornerstone of a good package. For example, run <code>?lm</code>. Help pages such as these are written in an R-specific markup language that is similar to LaTeX.</p>
+<p>Instead of writing the bulk of this code by hand, we can use the <em>roxygen2</em> package to build a skeleton that needs to be filled.</p>
+<p>To get started, we can generate the skeleton of our functions’ documentation by clicking anywhere within each function and using <em>Code &gt; Insert Roxygen Skeleton</em>.</p>
+<pre class="r"><code>#&#39; Title
+#&#39;
+#&#39; @param obj
+#&#39; @param ...
+#&#39;
+#&#39; @return
+#&#39; @export
+#&#39;
+#&#39; @examples
+fooadd &lt;- function(...) {
+  x &lt;- sum(...)
+
+  out &lt;- list(vals = unlist(list(...)), sum = x)
+  class(out) &lt;- &quot;fadd&quot;
+  out
+}
+
+#&#39; Title
+#&#39;
+#&#39; @param x
+#&#39; @param ...
+#&#39;
+#&#39; @return
+#&#39; @export
+#&#39;
+#&#39; @examples
+print.fadd &lt;- function(x, ...) {
+
+  base &lt;- glue::glue(&#39;{x$vals[1]} +&#39;)
+  y &lt;- x$vals[2L:length(x$vals)]
+
+  for (i in 1L:length(y)) {
+    if (i &lt; length(y)) {
+      base &lt;- glue::glue(&#39;{base} {y[i]} +&#39;)
+    } else if (i == length(y)) {
+      base &lt;- glue::glue(&#39;{base} {y[i]}&#39;)
+    }
+  }
+  cat(glue::glue(&#39;{base} = {x$sum}&#39;))
+}</code></pre>
+<p>Roxygen comments begin with <code>#'</code>; comments that proceed a function are called blocks and are separated by <code>@tags</code>.</p>
+<p>The first roxygen comment is the title of the documentation while the second roxygen comment becomes the description of the function. The third untagged comment is the details section that goes into more specific detail about how the function works; this section usually comes after <code>@param</code> tags.</p>
+<p>Your package should at a minimum have the following tags:</p>
+<p><code>@param a_paramter</code> tags describe specific parameters in the function (i.e., whether they are required or optional, their class, etc.).<br />
+<code>@return</code> describes what is returned when a function is succesfully run.<br />
+<code>@examples</code> is where you should include executable R code as examples of the function in use.<br />
+<code>@export</code> indicates to add the function to the NAMESPACE (described below) so the function can actually be used.</p>
+<p>Let’s populate the tags with <code>fooadd()</code> specific information.</p>
+<pre class="r"><code>#&#39; fooadd
+#&#39;
+#&#39; A useless function for adding numbers.
+#&#39;
+#&#39; @param ... numbers you could sum
+#&#39;
+#&#39; @return The summation
+#&#39; @export
+#&#39;
+#&#39; @examples
+#&#39; fooadd(1, 2, 3, 4)
+fooadd &lt;- function(...) {
+  x &lt;- sum(...)
+
+  out &lt;- list(vals = unlist(list(...)), sum = x)
+  class(out) &lt;- &quot;fadd&quot;
+  out
+}
+
+#&#39; S3 method for printing fooadd
+#&#39;
+#&#39; @param x list containing objects to print
+#&#39; @param ... optional arguments
+#&#39;
+#&#39; @return Some pretty output
+#&#39; @export
+print.fadd &lt;- function(x, ...) {
+
+  base &lt;- glue::glue(&#39;{x$vals[1]} +&#39;)
+  y &lt;- x$vals[2L:length(x$vals)]
+
+  for (i in 1L:length(y)) {
+    if (i &lt; length(y)) {
+      base &lt;- glue::glue(&#39;{base} {y[i]} +&#39;)
+    } else if (i == length(y)) {
+      base &lt;- glue::glue(&#39;{base} {y[i]}&#39;)
+    }
+  }
+  cat(glue::glue(&#39;{base} = {x$sum}&#39;))
+}</code></pre>
+<p>We can now generate the files that will contain this documentation by calling <code>document()</code>. If we run <code>?fooadd</code> the documentation will be returned.</p>
+<p><img src="images/help_food.PNG" style="width:75%"></p>
+<div id="namespace-description" class="section level3">
+<h3>NAMESPACE &amp; DESCRIPTION</h3>
+<p>You might have noticed that <code>fooadd()</code> uses a function from another package, <code>glue()</code> from <em>glue</em>, to create our output. What happens though if a user doesn’t already have <em>glue</em> installed? If I run <code>check()</code> (we will get to this soon) I get an error indicating that I haven’t included an <code>import</code> for <code>glue()</code>.</p>
+<pre class="r"><code>checking dependencies in R code ... WARNING
+  &#39;::&#39; or &#39;:::&#39; import not declared from: &#39;glue&#39;
+
+1 error x | 1 warning x | 0 notes √</code></pre>
+<p>This is where the NAMESPACE and DESCRIPTION come into play; they basically ensure that our package plays well with others. <em>You should not edit the NAMESPACE by hand</em>.</p>
+<p>There are two ways of doing this: imports and depends. <code>imports</code> and <code>depends</code> will both install packages that aren’t already installed on a system when installing a package that uses them, their only difference is that <code>depends</code> will also load the package into the environment when the package is attached. For our package we will just use <code>imports</code> as we are accessing <code>glue()</code> through <code>::</code>.</p>
+<p>To include <em>glue</em> as an import in DESCRIPTION we can run <code>use_package("glue")</code>.</p>
+<pre class="r"><code>✔ Adding &#39;glue&#39; to Imports field in DESCRIPTION
+● Refer to functions with `glue::fun()`</code></pre>
+<p>If we open DESCRIPTION we should now see an <code>imports</code> field for <em>glue</em>.</p>
+<pre><code>Package: foopkg
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = &quot;First&quot;,
+           family = &quot;Last&quot;,
+           role = c(&quot;aut&quot;, &quot;cre&quot;),
+           email = &quot;first.last@example.com&quot;)
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Imports: 
+    glue</code></pre>
+<p>While we have DESCRIPTION open we can go ahead and update some of the missing fields.</p>
+</div>
+</div>
+<div id="tests" class="section level2">
+<h2>Tests</h2>
+<p>Up to this point we have been informally checking the performance of our function. While this may work for quick checks it is not scalable. For example, at some point in a package’s timeline new updates will be released, how would you ensure that these updates don’t create issues in functionality? It is because of this we should formally write unit tests (a unit test is just a test that evaluates individual components of software). To do this we will use the <em>testhat</em> package.</p>
+<p>Per usual, <em>devtools</em> has a helper function for setting this up. Run <code>use_test()</code> in the console.</p>
+<pre class="r"><code>✔ Adding &#39;testthat&#39; to Suggests field in DESCRIPTION
+✔ Creating &#39;tests/testthat/&#39;
+✔ Writing &#39;tests/testthat.R&#39;
+● Call `use_test()` to initialize a basic test file and open it for editing.
+✔ Writing &#39;tests/testthat/test-fooadd.R&#39;
+● Modify &#39;tests/testthat/test-fooadd.R&#39;</code></pre>
+<p>A new folder should be created in your directory called <code>tests</code> which should contain another folder, <code>testhat</code>. Within the <code>testhat</code> folder a new R script should exist, ‘test-fooadd.R’ containing the following code:</p>
+<pre class="r"><code>context(&quot;test-fooadd&quot;)
+
+test_that(&quot;multiplication works&quot;, {
+  expect_equal(2 * 2, 4)
+})</code></pre>
+<p>R package unit tests have the following structure files &gt; tests &gt; expectations. Files contain groups of related tests, and tests (starts with <code>test_</code>) contain groups of related expectations. An expectation (starts with <code>expect_</code>) is exactly what it sounds like, it’s the expected value of a procedure. Let’s write a simple test for <code>fooadd()</code>.</p>
+<pre class="r"><code>context(&quot;fooadd&quot;)
+
+test_that(&quot;summation is correct&quot;, {
+  expect_equal(fooadd(1, 4, 23)$sum, 28)
+})</code></pre>
+<p>Our test evaluates whether <code>fooadd()</code> returns a summation to which we know the correct value, in this case 28. Now, if we run <code>test()</code> R will evaluate whether or not our unit test passes indicating if <code>fooadd()</code> is working as expected.</p>
+<pre class="r"><code>√ | OK F W S | Context
+√ |  1       | fooadd
+
+== Results =====================================================================
+OK:       1
+Failed:   0
+Warnings: 0
+Skipped:  0</code></pre>
+<p>You can test just about anything in a function and it is up to you to decide what you test. That being said it’s best to at least test external interfaces (i.e., the values returned to a user and errors) and to write tests for bugs that you discover throughout the development process.</p>
+</div>
+<div id="check-and-install" class="section level2">
+<h2>Check and Install</h2>
+<p>We now have a (minimally) acceptable package and are ready to install it on our own systems! First, let’s do a formal check of the package to make sure we aren’t missing anyting, run <code>check()</code>. <code>check()</code> goes through our package structure and checks for common errors, incomplete documentation, declared dependencies, and passing tests. Once complete, a report with the number of errors, warnings, and notes will be returned.</p>
+<pre class="r"><code>&gt; check()
+
+...
+
+-- R CMD check results ----------------------- foopkg 0.0.0.9000 ----
+Duration: 18s
+
+0 errors √ | 0 warnings √ | 0 notes √</code></pre>
+<p>It is important your check is clean of any issues, package with any errors or warnings would not be accepted on CRAN.</p>
+<p>We are at the final step, installing and using our package. Go ahead and run <code>install()</code> in the console. Once <code>install()</code> is complete, attach <em>foopkg</em> and test out <code>fooadd()</code></p>
+<pre class="r"><code>library(foopkg)
+
+fooadd(1, 3, 45, 16)</code></pre>
+<pre><code>## 1 + 3 + 45 + 16 = 65</code></pre>
+</div>
+<div id="resources" class="section level2">
+<h2>Resources</h2>
+<p>This tutorial is largely based on <em>R Packages</em> (2nd edition) by Hadley Wickham. If you are serious about making your own package, I highly recommend you give it a read. A free online version of the text can be found <a href="https://r-pkgs.org/">here</a>.</p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
