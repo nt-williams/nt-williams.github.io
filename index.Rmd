@@ -1,4 +1,5 @@
 ---
+title: Work Portfolio
 output: html_document
 ---
 
@@ -9,8 +10,6 @@ body {
 }
 
 </style>
-
-<br>
 
 ### Visualization
 
