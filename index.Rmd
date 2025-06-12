@@ -8,8 +8,6 @@ links:
     url: "https://github.com/nt-williams"
   - label: Google Scholar
     url: "https://scholar.google.com/citations?user=qbfagvkAAAAJ&hl=en"
-  # - label: Email
-  #   url: "mailto:ntwilliams.personal@gmail.com"
 output:
   function (css = NULL, includes = NULL, ...) postcards:::get_template("solana", "styles.scss", includes, ...)
 ---
