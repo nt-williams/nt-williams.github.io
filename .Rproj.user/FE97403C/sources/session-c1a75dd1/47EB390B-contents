@@ -1,0 +1,31 @@
+// styles.scss
+
+// Define color variables (optional but good practice)
+$background-color: #ffffff; // white
+  $text-color: #000000;       // black, for contrast
+  
+  // Apply background to entire page
+body {
+  background-color: $background-color;
+  color: $text-color;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+// Optional: make sure html element also has white background
+html {
+  background-color: $background-color;
+}
+
+// Optional: style headers and links for consistency
+h1, h2, h3, h4, h5, h6 {
+  color: $text-color;
+}
+
+a {
+  color: blue;
+  &:hover {
+    color: darkblue;
+  }
+}
