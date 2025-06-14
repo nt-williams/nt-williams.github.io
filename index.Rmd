@@ -24,7 +24,7 @@ I'm beginning a Ph.D. in Biostatistics at the University of California, Berkeley
 ### Software
 
 |  |  |
-|----------------|--------------------------------------------------------|
+|------------------|------------------------------------------------------|
 | [`lmtp`](https://beyondtheate.com) | Non-parametric Causal Effects of Feasible Interventions Based on Modified Treatment Policies |
 | [`mlr3superlearner`](https://cran.r-project.org/package=mlr3superlearner) | Super learner fitting and prediction using `mlr3` |
 | [`crumble`](https://cran.r-project.org/package=crumble) | General targeted machine learning for modern causal mediation analysis |
@@ -39,7 +39,7 @@ I'm beginning a Ph.D. in Biostatistics at the University of California, Berkeley
 
 [Nonparametric estimation of an optimal treatment rule with fused randomized trials and missing effect modifiers](https://doi.org/10.48550/arXiv.2506.10863), Under review at *Annals of Applied Statistics*
 
-[Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies. Journal of the American Statistical Association](https://doi.org/10.1080/01621459.2021.1955691), *Journal of the American Statistical Association*
+[Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies](https://doi.org/10.1080/01621459.2021.1955691), *Journal of the American Statistical Association*
 
 [Learning optimal dynamic treatment regimes from longitudinal data](https://doi.org/10.1093/aje/kwae122), *American Journal of Epidemiology*
 
