@@ -15,16 +15,18 @@ output:
 ::: {style="height:25px;"}
 :::
 
-I'm a biostatistician and research software engineer who focuses on the development (and application) of nonparametric methods with the goal of answering causal questions. My most recent substantive work has been in the area of substance abuse epidemiology. I currently work in the Department of Epidemiology at Columbia University with [Kara Rudolph](https://kararudolph.github.io/), and frequently collaborate with [Iván Díaz](https://idiaz.xyz/) at NYU.
+I'm a biostatistician and research software engineer who focuses on the development (and application) of nonparametric methods with the goal of answering causal questions. My most recent substantive work has been in the area of substance abuse epidemiology.
 
-I'm beginning a Ph.D. in Biostatistics at the University of California, Berkeley in Fall 2025. I received a B.A. in Psychology from the University of Colorado, Boulder in 2017 and an M.P.H in Biostatistics from Columbia University in 2019.
+I'm a Ph.D. student in Biostatistics at the University of California, Berkeley, working with [Laura Balzer](https://publichealth.berkeley.edu/people/laura-balzer). I also work part-time in the Department of Epidemiology at Columbia University with [Kara Rudolph](https://kararudolph.github.io/), and frequently collaborate with [Iván Díaz](https://idiaz.xyz/) at NYU.
+
+I received a B.A. in Psychology from the University of Colorado, Boulder in 2017 and an M.P.H in Biostatistics from Columbia University in 2019.
 
 ------------------------------------------------------------------------
 
 ### Software
 
 |  |  |
-|------------------|------------------------------------------------------|
+|-------------------|-----------------------------------------------------|
 | [`lmtp`](https://beyondtheate.com) | Non-parametric Causal Effects of Feasible Interventions Based on Modified Treatment Policies |
 | [`mlr3superlearner`](https://cran.r-project.org/package=mlr3superlearner) | Super learner fitting and prediction using `mlr3` |
 | [`crumble`](https://cran.r-project.org/package=crumble) | General targeted machine learning for modern causal mediation analysis |
@@ -37,7 +39,9 @@ I'm beginning a Ph.D. in Biostatistics at the University of California, Berkeley
 
 ### Selected publications
 
-[Nonparametric estimation of an optimal treatment rule with fused randomized trials and missing effect modifiers](https://doi.org/10.48550/arXiv.2506.10863), Under review at *Annals of Applied Statistics*
+[Riesz representers for the rest of us](https://arxiv.org/abs/2507.19413), Under revisions at *Epidemiology*
+
+[Nonparametric estimation of an optimal treatment rule with fused randomized trials and missing effect modifiers](https://doi.org/10.48550/arXiv.2506.10863), Under revision.
 
 [Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies](https://doi.org/10.1080/01621459.2021.1955691), *Journal of the American Statistical Association*
 
@@ -45,6 +49,6 @@ I'm beginning a Ph.D. in Biostatistics at the University of California, Berkeley
 
 [Optimising precision and power by machine learning in randomised trials with ordinal and time-to-event outcomes with an application to COVID-19](https://doi.org/10.1111/rssa.12915), *Journal of the Royal Statistical Society: Series A (Statistics in Society)*
 
-[Two-stage targeted minimum-loss based estimation for non-negative two-part outcomes](https://arxiv.org/abs/2401.04263), In press at *Statistical Methods in Medical Research*
+[Two-stage targeted minimum-loss based estimation for non-negative two-part outcomes](https://pubmed.ncbi.nlm.nih.gov/40567218/), *Statistical Methods in Medical Research*
 
 [Optimally choosing medication type for patients with opioid use disorder](https://doi.org/10.1093/aje/kwac217), *American Journal of Epidemiology*
