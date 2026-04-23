@@ -26,7 +26,7 @@ I received a B.A. in Psychology from the University of Colorado, Boulder in 2017
 ### Software
 
 |  |  |
-|-------------------|-----------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | [`lmtp`](https://beyondtheate.com) | Non-parametric Causal Effects of Feasible Interventions Based on Modified Treatment Policies |
 | [`mlr3superlearner`](https://cran.r-project.org/package=mlr3superlearner) | Super learner fitting and prediction using `mlr3` |
 | [`crumble`](https://cran.r-project.org/package=crumble) | General targeted machine learning for modern causal mediation analysis |
@@ -39,9 +39,11 @@ I received a B.A. in Psychology from the University of Colorado, Boulder in 2017
 
 ### Selected publications
 
-[Riesz representers for the rest of us](https://arxiv.org/abs/2507.19413), Under revisions at *Epidemiology*
+[Improving reproducibility by controlling random seed stability in machine learning based estimation via bagging](https://arxiv.org/abs/2604.17694), preprint
 
-[Nonparametric estimation of an optimal treatment rule with fused randomized trials and missing effect modifiers](https://doi.org/10.48550/arXiv.2506.10863), Under revision.
+[Riesz representers for the rest of us](https://arxiv.org/abs/2507.19413), *Epidemiology*
+
+[Nonparametric estimation of an optimal treatment rule with fused randomized trials and missing effect modifiers](https://doi.org/10.48550/arXiv.2506.10863), under revision
 
 [Nonparametric Causal Effects Based on Longitudinal Modified Treatment Policies](https://doi.org/10.1080/01621459.2021.1955691), *Journal of the American Statistical Association*
 
